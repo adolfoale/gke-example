@@ -32,7 +32,7 @@ module "gke" {
   node_pools = [
     {
       name                      = "default-node-pool"
-      machine_type              = "e2-micro"
+      machine_type              = "e2-standard-2"
       node_locations            = "us-central1-a,us-central1-b,us-central1-c"
       min_count                 = 1
       max_count                 = 1
