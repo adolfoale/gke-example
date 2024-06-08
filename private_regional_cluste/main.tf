@@ -7,16 +7,33 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(module.gke.ca_certificate)
 }
 
-data "google_compute_subnetwork" "subnetwork" {
-  name    = "default"
-  project = "optical-caldron-421816"
-  region  = "us-central1"
+resource "google_compute_network" "default" {
+  name                     = "vpc-01"
+  project                  = "optical-caldron-421816"
+  auto_create_subnetworks  = false
+  enable_ula_internal_ipv6 = true
 }
 
-resource "google_compute_network" "vpc_network" {
+resource "google_compute_subnetwork" "default" {
+  name    = "us-central1-01"
   project = "optical-caldron-421816"
-  name    = "vpc-02"
-  auto_create_subnetworks = false
+
+  ip_cidr_range = "10.0.0.0/16"
+  region        = "us-central1"
+
+  stack_type       = "IPV4_IPV6"
+  ipv6_access_type = "INTERNAL" # Change to "EXTERNAL" if creating an external loadbalancer
+
+  network = google_compute_network.default.id
+  secondary_ip_range {
+    range_name    = "us-central1-01-gke-01-pods"
+    ip_cidr_range = "192.168.0.0/24"
+  }
+
+  secondary_ip_range {
+    range_name    = "us-central1-01-gke-01-services"
+    ip_cidr_range = "192.168.1.0/24"
+  }
 }
 
 module "gke" {
@@ -25,10 +42,10 @@ module "gke" {
   name                       = "gke-private-cluster"
   region                     = "us-central1"
   zones                      = ["us-central1-a", "us-central1-b", "us-central1-f"]
-  network                    = "default"
-  subnetwork                 = "default"
-  ip_range_pods              = ""
-  ip_range_services          = ""
+  network                    = "vpc-01"
+  subnetwork                 = "us-central1-01"
+  ip_range_pods              = "us-central1-01-gke-01-pods"
+  ip_range_services          = "us-central1-01-gke-01-services"
   create_service_account     = false
   service_account            = "791582853027-compute@developer.gserviceaccount.com"
   enable_private_endpoint    = true
@@ -45,25 +62,25 @@ module "gke" {
 
   node_pools = [
     {
-      name                      = "default-node-pool"
-      machine_type              = "e2-standard-2"
-      node_locations            = "us-central1-a,us-central1-b,us-central1-c"
-      min_count                 = 1
-      max_count                 = 1
-      local_ssd_count           = 0
-      spot                      = false
-      disk_size_gb              = 20
-      disk_type                 = "pd-standard"
-      image_type                = "COS_CONTAINERD"
-      enable_gcfs               = false
-      enable_gvnic              = false
-      logging_variant           = "DEFAULT"
-      auto_repair               = true
-      auto_upgrade              = true
-      service_account           = "791582853027-compute@developer.gserviceaccount.com"
-      preemptible               = true
-      initial_node_count        = 1
-    },  
+      name               = "default-node-pool"
+      machine_type       = "e2-standard-2"
+      node_locations     = "us-central1-a,us-central1-b,us-central1-c"
+      min_count          = 1
+      max_count          = 1
+      local_ssd_count    = 0
+      spot               = false
+      disk_size_gb       = 20
+      disk_type          = "pd-standard"
+      image_type         = "COS_CONTAINERD"
+      enable_gcfs        = false
+      enable_gvnic       = false
+      logging_variant    = "DEFAULT"
+      auto_repair        = true
+      auto_upgrade       = true
+      service_account    = "791582853027-compute@developer.gserviceaccount.com"
+      preemptible        = true
+      initial_node_count = 1
+    },
   ]
 
   node_pools_oauth_scopes = {
@@ -113,7 +130,7 @@ module "gke" {
 
   master_authorized_networks = [
     {
-      cidr_block   = data.google_compute_subnetwork.subnetwork.ip_cidr_range
+      cidr_block   = "10.0.0.0/16"
       display_name = "VPC"
     },
   ]
