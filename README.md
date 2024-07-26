@@ -46,7 +46,16 @@
 
 ## :dart: About ##
 
-This project is about the creation of the gke clusters.
+This project is about the creation of the gke clusters. Inside you will find two charpter:
+- private_regional_cluster
+- public_regional_cluster
+
+## :dart: Private regional cluster ##
+Here we have two methods:
+- Creating cluster with `gcloud`
+- Creating cluster with `terraform`
+
+In the second method we are going to create a `IAP tunnel` to execute `kubectl` commands from local
 
 ## :sparkles: Features ##
 
@@ -58,40 +67,20 @@ This project is about the creation of the gke clusters.
 
 The following tools were used in this project:
 
-- [Expo](https://expo.io/)
-- [Node.js](https://nodejs.org/en/)
-- [React](https://pt-br.reactjs.org/)
-- [React Native](https://reactnative.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
+- [Terraform](https://www.terraform.io/)
+- [Gcloud](https://cloud.google.com/sdk/docs/install?hl=es-419)
 
 ## :white_check_mark: Requirements ##
 
-Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [Node](https://nodejs.org/en/) installed.
+Before starting :checkered_flag:, you need to have [Gcloud](https://cloud.google.com/sdk/docs/install?hl=es-419) and [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli installed.
 
-## :checkered_flag: Starting ##
-
-```bash
-# Clone this project
-$ git clone https://github.com/adolfoale/gke-example
-
-# Access
-$ cd gke-example
-
-# Install dependencies
-$ yarn
-
-# Run the project
-$ yarn start
-
-# The server will initialize in the <http://localhost:3000>
-```
 
 ## :memo: License ##
 
 This project is under license from MIT. For more details, see the [LICENSE](LICENSE.md) file.
 
 
-Made with :heart: by <a href="https://github.com/adolfoale" target="_blank">{{YOUR_NAME}}</a>
+Made with :heart: by <a href="https://www.linkedin.com/in/adolfoalejandroacevedo/" target="_blank">{{Adolfo Acevedo}}</a>
 
 &#xa0;
 
