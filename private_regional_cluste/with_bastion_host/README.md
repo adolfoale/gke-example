@@ -50,15 +50,49 @@ This project explain how to create a private GKE cluster with bastion host.
 
 ## :sparkles: Features ##
 
-:heavy_check_mark: Using gcloud;\
-:heavy_check_mark: Using terraform;
+:heavy_check_mark: Using gcloud;
 
 ## :rocket: Technologies ##
 
 The following tools were used in this project:
 
 - [Terraform](https://cloud.google.com/kubernetes-engine/docs/archive/creating-kubernetes-engine-private-clusters-with-net-proxies)
-- gcloud
+
+## :white_check_mark: Requirements ##
+
+:heavy_check_mark: Before starting :checkered_flag:, you need to have [gcloud cli](https://cloud.google.com/sdk/docs/install?hl=es-419) and [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) installed.;\
+:heavy_check_mark: These APIs have to be installed in your GCP project:;
+- Compute Engine API
+- Kubernetes Engine API
+- Network Connectivity API
+
+## :checkered_flag: Starting ##
+
+```bash
+# Clone this project
+$ git clone https://github.com/{{adolfoale}}/gke-example
+
+# Access
+$ cd gke-example/private_regional_cluster
+
+# Deploy GKE ckuster and bastion host
+$ sh cluster.sh
+
+# Get into bastion host
+$ gcloud compute ssh proxy-temp
+
+# Install kubectl
+sudo apt-get install kubectl
+
+# Install gke-gcloud-auth-plugin
+sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin
+
+# Connect to cluster
+gcloud container clusters get-credentials frobnitz --region [REGION] --project [project_id]
+
+# Text your kubectl commands
+kubectl get nodes
+```
 
 ## :memo: License ##
 
