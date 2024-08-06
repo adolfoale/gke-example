@@ -5,7 +5,7 @@
 #Enable APIs
 gcloud services enable compute.googleapis.com 
 gcloud services enable container.googleapis.com
-gcloud services networkconnectivity.googleapis.com
+gcloud services enable networkconnectivity.googleapis.com
 
 # set you project
 export YOUR_PROJECT_ID="semiotic-anvil-430502-e7"
